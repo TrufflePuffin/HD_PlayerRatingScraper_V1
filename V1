@@ -1,0 +1,20 @@
+import csv
+import requests
+from bs4 import BeautifulSoup
+
+url = "https://www.whatifsports.com/hd/PlayerProfile/Ratings.aspx?tid=0&pid=5305306"  # Replace with the actual web address
+
+response = requests.get(url)
+html = response.content
+
+soup = BeautifulSoup(html, 'html.parser')
+
+td_tags = soup.select('td.rating')
+text_values = [td.get_text(strip=True) for td in td_tags]
+
+# Writing values to a CSV file
+with open('ratings.csv', 'w', newline='') as csvfile:
+    writer = csv.writer(csvfile)
+    writer.writerow(text_values)
+
+print("CSV file 'ratings.csv' has been created with the ratings.")
