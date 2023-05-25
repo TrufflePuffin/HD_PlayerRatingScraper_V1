@@ -1,0 +1,28 @@
+import csv
+from bs4 import BeautifulSoup
+
+# Paste or read the HTML content from a file
+html_content = """
+
+"""
+
+# Parse the HTML
+soup = BeautifulSoup(html_content, 'html.parser')
+
+# Find all <a> tags within the table
+table_links = soup.find_all('table')[0].find_all('a')
+
+# Extract the URLs and associated text
+links = []
+for link in table_links:
+    url = "https://www.whatifsports.com" + link['href']
+    text = link.text
+    links.append((url, text))
+
+# Write the extracted links to a CSV file
+with open('links.csv', 'w', newline='') as csvfile:
+    writer = csv.writer(csvfile)
+    writer.writerow(['URL', 'Name'])  # Write the header row
+    writer.writerows(links)  # Write the link data
+
+print("CSV file created successfully.")
