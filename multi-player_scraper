@@ -1,0 +1,25 @@
+import requests
+from bs4 import BeautifulSoup
+
+# List of URLs
+urls = [
+    "https://www.whatifsports.com/hd/PlayerProfile/Default.aspx?pid=5258421",
+    "https://www.whatifsports.com/hd/PlayerProfile/Default.aspx?pid=5370121"
+
+]
+
+for url in urls:
+    response = requests.get(url)
+    html = response.content
+
+    soup = BeautifulSoup(html, 'html.parser')
+
+    # Extracting the player name
+    player_name = soup.select_one('h1 span#ctl00_ctl00_ctl00_MainContentPlaceHolder_MainContentPlaceHolder_PlayerName').text
+
+    td_tags = soup.select('td.rating')
+    text_values = [td.get_text(strip=True) for td in td_tags]
+
+    data = [player_name] + text_values
+
+    print(data)
